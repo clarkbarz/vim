@@ -52,6 +52,9 @@ autocmd FileType c,cpp,java,php,ruby,python,htmldjango,html,markdown,rst autocmd
 " Open HTML files as HTML Django filetypes
 au BufNewFile,BufRead *.html set filetype=htmldjango
 
+" Open SSI files as HTML
+au BufNewFile,BufRead *.ssi set filetype=html
+
 " Flake8 Options
 let g:flake8_ignore = "E501,W293"
 
