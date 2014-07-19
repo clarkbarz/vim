@@ -47,10 +47,13 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 " Strip trailing whitespace from these filetypes upon write
-autocmd FileType c,cpp,java,php,ruby,python,htmldjango,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,php,ruby,python,htmldjango,html,markdown,rst autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " Open HTML files as HTML Django filetypes
 au BufNewFile,BufRead *.html set filetype=htmldjango
+
+" Open SSI files as HTML
+au BufNewFile,BufRead *.ssi set filetype=html
 
 " Flake8 Options
 let g:flake8_ignore = "E501,W293"
