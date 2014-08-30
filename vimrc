@@ -55,6 +55,9 @@ au BufNewFile,BufRead *.html set filetype=htmldjango
 " Open SSI files as HTML
 au BufNewFile,BufRead *.ssi set filetype=html
 
+" Call Flake8 on python save
+autocmd BufWritePost *.py call Flake8()
+
 " Flake8 Options
 let g:flake8_ignore = "E501,W293"
 
