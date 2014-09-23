@@ -59,7 +59,7 @@ au BufNewFile,BufRead *.ssi set filetype=html
 autocmd BufWritePost *.py call Flake8()
 
 " Flake8 Options
-let g:flake8_ignore = "E501,W293"
+let g:flake8_ignore = "E501,W293,E265"
 
 " Enable neocomplcache on vim startup, remaps tab and space
 let g:neocomplcache_enable_at_startup = 1
