@@ -80,6 +80,9 @@ set clipboard=unnamed
 command! -bang -range=% -complete=file -nargs=* W <line1>,<line2>write<bang> <args>
 command! -bang Q quit<bang>
 
+" JSBeautify
+map <c-f> :call JsBeautify()<cr>
+
 " Vim with default settings does not allow easy switching between multiple files
 " in the same editor window. Users can use multiple split windows or multiple
 " tab pages to edit multiple files, but it is still best to enable an option to
