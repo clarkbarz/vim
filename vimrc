@@ -84,7 +84,7 @@ command! -bang Q quit<bang>
 map <C-F> :call JsBeautify()<cr>
 
 " For php syntax checking
-map <C-D> :!php -l %<CR>
+map <C-P> :!php -l %<CR>
 
 " Vim with default settings does not allow easy switching between multiple files
 " in the same editor window. Users can use multiple split windows or multiple
