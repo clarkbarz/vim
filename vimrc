@@ -86,6 +86,9 @@ map <C-F> :call JsBeautify()<cr>
 " For php syntax checking
 map <C-P> :!php -l %<CR>
 
+" For blade template indentation to work properly
+autocmd BufNewFile,BufRead *.blade.php set ft=html | set ft=phtml | set ft=blade
+
 " Vim with default settings does not allow easy switching between multiple files
 " in the same editor window. Users can use multiple split windows or multiple
 " tab pages to edit multiple files, but it is still best to enable an option to
