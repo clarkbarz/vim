@@ -188,6 +188,7 @@ set softtabstop=2
 set expandtab
 set smarttab
 set shiftround
+set smartindent
 
 "------------------------------------------------------------
 " Mappings {{{1
