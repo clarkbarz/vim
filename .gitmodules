@@ -34,3 +34,6 @@
 [submodule "bundle/vim-mustache-handlebars"]
 	path = bundle/vim-mustache-handlebars
 	url = git://github.com/mustache/vim-mustache-handlebars.git
+[submodule "bundle/vim-twig"]
+	path = bundle/vim-twig
+	url = https://github.com/evidens/vim-twig.git
