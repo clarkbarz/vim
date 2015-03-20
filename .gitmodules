@@ -4,12 +4,6 @@
 [submodule "bundle/vim-flake8"]
 	path = bundle/vim-flake8
 	url = git://github.com/nvie/vim-flake8.git
-[submodule "bundle/vim-easymotion"]
-	path = bundle/vim-easymotion
-	url = git://github.com/Lokaltog/vim-easymotion.git
-[submodule "bundle/nerdtree"]
-	path = bundle/nerdtree
-	url = git://github.com/scrooloose/nerdtree.git
 [submodule "bundle/nerdcommenter"]
 	path = bundle/nerdcommenter
 	url = git://github.com/scrooloose/nerdcommenter.git
@@ -19,9 +13,6 @@
 [submodule "bundle/command-t"]
 	path = bundle/command-t
 	url = git://git.wincent.com/command-t.git
-[submodule "bundle/indentLine"]
-	path = bundle/indentLine
-	url = git://github.com/Yggdroot/indentLine.git
 [submodule "bundle/vim-jsbeautify"]
 	path = bundle/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
