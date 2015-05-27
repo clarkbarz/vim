@@ -56,10 +56,10 @@ au BufNewFile,BufRead *.html set filetype=htmldjango
 au BufNewFile,BufRead *.ssi set filetype=html
 
 " Call Flake8 on python save
-autocmd BufWritePost *.py call Flake8()
+"autocmd BufWritePost *.py call Flake8()
 
 " Flake8 Options
-let g:flake8_ignore = "E501,W293,E265"
+"let g:flake8_ignore = "E501,W293,E265"
 
 " Enable neocomplcache on vim startup, remaps tab and space
 let g:neocomplcache_enable_at_startup = 1
