@@ -201,3 +201,6 @@ map Y y$
 " Map <C-L> (redraw screen) to also turn off search highlighting until the
 " next search
 nnoremap <C-L> :nohl<CR><C-L>
+
+" Syntastic should ignore E501 flake8 errors
+let g:syntastic_python_flake8_args='--ignore=E501,E265,E131'
