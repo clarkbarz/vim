@@ -62,6 +62,7 @@ au BufNewFile,BufRead *.ssi set filetype=html
 "let g:flake8_ignore = "E501,W293,E265"
 
 " Enable neocomplete on vim startup, remaps tab and space
+set completeopt-=preview
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#min_syntax_length = 4
