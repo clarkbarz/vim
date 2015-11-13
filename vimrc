@@ -61,16 +61,14 @@ au BufNewFile,BufRead *.ssi set filetype=html
 " Flake8 Options
 "let g:flake8_ignore = "E501,W293,E265"
 
-" Enable neocomplcache on vim startup, remaps tab and space
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_min_syntax_length = 4
+" Enable neocomplete on vim startup, remaps tab and space
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#min_syntax_length = 4
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-    return neocomplcache#smart_close_popup() . "\<CR>"
-    " For no inserting <CR> key.
-    " return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+    return neocomplete#smart_close_popup() . "\<CR>"
 endfunction
 
 " Use system clipboard
