@@ -47,7 +47,7 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 " Strip trailing whitespace from these filetypes upon write
-autocmd FileType c,cpp,java,javascript,php,ruby,python,htmldjango,html,markdown,rst autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,javascript,javascript.jsx,php,ruby,python,htmldjango,html,scss,css,markdown,rst autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " Open HTML files as HTML Django filetypes
 au BufNewFile,BufRead *.html set filetype=htmldjango
