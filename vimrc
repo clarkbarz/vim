@@ -79,9 +79,6 @@ set clipboard=unnamed
 command! -bang -range=% -complete=file -nargs=* W <line1>,<line2>write<bang> <args>
 command! -bang Q quit<bang>
 
-" JSBeautify
-map <C-F> :call JsBeautify()<cr>
-
 " For php syntax checking
 map <C-P> :!php -l %<CR>
 
