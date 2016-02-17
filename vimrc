@@ -211,3 +211,6 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 " Syntastic should ignore E501 flake8 errors
 let g:syntastic_python_flake8_args='--ignore=E501,E265,E131'
+
+" NerdCommenter
+let NERDSpaceDelims = 1
