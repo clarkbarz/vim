@@ -113,7 +113,7 @@ set hlsearch
 " set nomodeline
 
 
-" Usability options {{{1
+" Usability options
 "
 " These are options that users frequently set in their .vimrc. Some of them
 " change Vim's behaviour in ways which deviate from the true Vi way, but
