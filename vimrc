@@ -208,8 +208,10 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+
 " Let javascript files be linted with eslint
 let g:syntastic_javascript_checkers = ['eslint']
+
 " Syntastic should ignore E501 flake8 errors
 let g:syntastic_python_flake8_args='--ignore=E501,E265,E131'
 
