@@ -222,3 +222,29 @@ let NERDSpaceDelims = 1
 
 " Command-T Ignore all node_modules directories
 set wildignore+=**/node_modules/*
+
+" Turn vim into word processing mode
+" func! WordProcessorMode()
+  " setlocal formatoptions=1
+  " setlocal noexpandtab
+  " map j gj
+  " map k gk
+  " setlocal spell spelllang=en_us
+  " set complete+=s
+  " set formatprg=par
+  " setlocal wrap
+  " setlocal linebreak
+" endfu
+" com! WP call WordProcessorMode()
+
+" Toggle relative line numbers on and off
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+" Map Ctrl-n to toggling relative line numbers
+nnoremap <C-n> :call NumberToggle()<cr>
