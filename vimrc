@@ -7,13 +7,22 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Shougo/neocomplete.vim'
-Plug 'scrooloose/nerdcommenter' 
-Plug 'vim-syntastic/syntastic' 
-Plug 'vim-airline/vim-airline' 
-Plug 'vim-airline/vim-airline-themes' 
-Plug 'airblade/vim-gitgutter' 
-Plug 'pangloss/vim-javascript' 
-Plug 'mxw/vim-jsx' 
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'junegunn/goyo.vim'
+Plug 'tpope/vim-markdown'
+Plug 'Raimondi/delimitMate'
+Plug 'reedes/vim-pencil'
+Plug 'mhinz/vim-startify'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-fugitive'
+Plug 'w0rp/ale'
+Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
@@ -45,14 +54,18 @@ set undofile
 " CtrlP Options
 let g:ctrlp_map = '<leader>t'
 let g:ctrlp_match_window = 'max:20'
-set wildignore+=*/tmp/*,*/node_modules/*,*.so,*.swp,*.zip,*.pyc
+let g:ctrlp_show_hidden = 1
+set wildignore+=*/tmp/*,*/node_modules/*,*.so,*.swp,*.zip,*.pyc,*/.git/*
 
 " <Ctrl-l> redraws the screen and removes any search highlighting.
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 
+" Leader remapped to ;
+let mapleader = ";"
+
 " Function to save cursor position when removing trailing whitespace
 fun! <SID>StripTrailingWhitespaces()
-    let l = line(".") 
+    let l = line(".")
     let c = col(".")
     %s/\s\+$//e
     call cursor(l, c)
@@ -67,10 +80,6 @@ au BufNewFile,BufRead *.html set filetype=htmldjango
 " Open SSI files as HTML
 au BufNewFile,BufRead *.ssi set filetype=html
 
-" Call Flake8 on python save
-"autocmd BufWritePost *.py call Flake8()
-"let g:flake8_ignore = "E501,W293,E265"
-
 " Enable neocomplete on vim startup, remaps tab and space
 set completeopt-=preview
 let g:neocomplete#enable_at_startup = 1
@@ -81,6 +90,10 @@ inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
     return neocomplete#smart_close_popup() . "\<CR>"
 endfunction
+
+" Native autocomplete?
+" filetype plugin on
+" set omnifunc=syntaxcomplete#Complete
 
 " Use system clipboard
 set clipboard=unnamed
@@ -170,7 +183,7 @@ set t_vb=
 set mouse=a
 
 " Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
+" press <Enter> to continue"
 set cmdheight=2
 
 " Display line numbers on the left
@@ -209,29 +222,32 @@ map Y y$
 " next search
 nnoremap <C-L> :nohl<CR><C-L>
 
-" Syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['scss'] }
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_debug = 0
-
-" Let javascript files be linted with eslint
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
-
-" Syntastic python settings
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--ignore=E501,E265,E131'
-let g:syntastic_python_python_exec = '/usr/local/bin/python3'
+" Asynchronous Lint Engine settings
+let g:airline#extensions#ale#enabled = 1
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+" let g:ale_open_list = 1
+" let g:ale_keep_list_window_open = 0
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'python': ['flake8'],
+\}
+let g:ale_python_flake8_args="--ignore=E501,E265,E131"
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " NerdCommenter
 let NERDSpaceDelims = 1
+
+" Open NerdTree on start if nothing open
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Moving between windows
+" noremap <C-h> <C-w>h
+" noremap <C-j> <C-w>j
+" noremap <C-k> <C-w>k
+" noremap <C-l> <C-w>l
 
 " Turn vim into word processing mode
 " func! WordProcessorMode()
@@ -259,9 +275,43 @@ endfunc
 " Map Ctrl-n to toggling relative line numbers
 nnoremap <C-n> :call NumberToggle()<cr>
 
+" Folds
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
 " space open/closes folds
 nnoremap <space> za
 set foldmethod=indent   " fold based on indent level
+set foldopen-=block     " make {} movement skip folds
+
+" Goyo
+function! s:auto_goyo()
+    if &ft == 'markdown' && winnr('$') == 1
+        Goyo 80
+        SoftPencil
+        setlocal spell
+    elseif exists('#goyo')
+        Goyo!
+    endif
+endfunction
+
+function! s:goyo_enter()
+  set wrap
+  set linebreak
+endfunction
+
+function! s:goyo_leave()
+    if winnr('$') < 2
+        silent! :q
+    endif
+endfunction
+
+augroup goyo_markdown
+    autocmd!
+    autocmd BufNewFile,BufRead * call s:auto_goyo()
+    autocmd! User GoyoLeave nested call s:goyo_leave()
+augroup END
+
+" Add commands to shift position of current tab left and right
+nnoremap <Leader>= :execute "tabmove" tabpagenr() + 1 <CR>
+nnoremap <Leader>- :execute "tabmove" tabpagenr() - 2 <CR>
