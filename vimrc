@@ -70,6 +70,11 @@ set undofile
 let g:ctrlp_map = '<leader>t'
 let g:ctrlp_match_window = 'max:20'
 let g:ctrlp_show_hidden = 1
+let g:ctrlp_prompt_mappings = {
+  \ 'AcceptSelection("e")': ['<c-t>'],
+  \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
+  \}
+
 set wildignore+=*/tmp/*,*/node_modules/*,*.so,*.swp,*.zip,*.pyc,*/.git/*
 
 " <Ctrl-l> redraws the screen and removes any search highlighting.
