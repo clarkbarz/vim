@@ -14,15 +14,17 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'junegunn/goyo.vim'
 Plug 'tpope/vim-markdown'
 Plug 'Raimondi/delimitMate'
-Plug 'reedes/vim-pencil'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
 Plug 'leafgarland/typescript-vim'
+Plug 'reedes/vim-pencil'
+Plug 'reedes/vim-lexical'
+Plug 'reedes/vim-litecorrect'
+Plug 'hashivim/vim-terraform'
 
 call plug#end()
 
@@ -188,6 +190,7 @@ set cmdheight=2
 
 " Display line numbers on the left
 set number
+set relativenumber
 
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
@@ -267,7 +270,9 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 function! NumberToggle()
   if(&relativenumber == 1)
     set number
+    set relativenumber!
   else
+    set number!
     set relativenumber
   endif
 endfunc
@@ -285,32 +290,50 @@ set foldmethod=indent   " fold based on indent level
 set foldopen-=block     " make {} movement skip folds
 
 " Goyo
-function! s:auto_goyo()
-    if &ft == 'markdown' && winnr('$') == 1
-        Goyo 80
-        SoftPencil
-        setlocal spell
-    elseif exists('#goyo')
-        Goyo!
-    endif
+" function! s:auto_goyo()
+    " if &ft == 'markdown' && winnr('$') == 1
+        " Goyo 80
+        " SoftPencil
+        " setlocal spell
+    " elseif exists('#goyo')
+        " Goyo!
+    " endif
+" endfunction
+" function! s:goyo_enter()
+  " set wrap
+  " set linebreak
+" endfunction
+" function! s:goyo_leave()
+    " if winnr('$') < 2
+        " silent! :q
+    " endif
+" endfunction
+" augroup goyo_markdown
+    " autocmd!
+    " autocmd BufNewFile,BufRead * call s:auto_goyo()
+    " autocmd! User GoyoLeave nested call s:goyo_leave()
+" augroup END
+
+" Writing mode
+let g:pencil#wrapModeDefault = 'hard'
+let g:pencil#textwidth = 80
+let g:airline_section_x = 'Pencil: %{PencilMode()}'
+
+function! Prose()
+  call pencil#init()
+  call lexical#init()
+  call litecorrect#init()
+  " call textobj#quote#init()
+  " call textobj#sentence#init()
 endfunction
 
-function! s:goyo_enter()
-  set wrap
-  set linebreak
-endfunction
-
-function! s:goyo_leave()
-    if winnr('$') < 2
-        silent! :q
-    endif
-endfunction
-
-augroup goyo_markdown
-    autocmd!
-    autocmd BufNewFile,BufRead * call s:auto_goyo()
-    autocmd! User GoyoLeave nested call s:goyo_leave()
+" Enable Prose mode for markdown file types
+augroup prose
+  autocmd FileType markdown,mkd call Prose()
 augroup END
+
+" Invoke manually by command for other file types
+command! -nargs=0 Prose call Prose()
 
 " Add commands to shift position of current tab left and right
 nnoremap <Leader>= :execute "tabmove" tabpagenr() + 1 <CR>
