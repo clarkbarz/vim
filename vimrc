@@ -6,7 +6,9 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
@@ -76,22 +78,26 @@ endfun
 " Strip trailing whitespace from these filetypes upon write
 autocmd FileType c,cpp,java,javascript,javascript.jsx,php,ruby,python,htmldjango,html,scss,css,markdown,rst,sql autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
+" Open Python/Javascript files with a 100 character line marker
+au BufNewFile,BufRead *.js,*.jsx,*.py set colorcolumn=101
+
 " Open HTML files as HTML Django filetypes
 au BufNewFile,BufRead *.html set filetype=htmldjango
 
 " Open SSI files as HTML
 au BufNewFile,BufRead *.ssi set filetype=html
 
-" Enable neocomplete on vim startup, remaps tab and space
+" Enable deocomplete on vim startup, remaps tab and space
+set pyxversion=3
 set completeopt-=preview
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#min_syntax_length = 4
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-    return neocomplete#smart_close_popup() . "\<CR>"
-endfunction
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({
+      \ 'smart_case': v:true,
+      \ 'max_list': 20,
+      \ })
+" Remap tab and shift-tab to move through deocomplete options
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Native autocomplete?
 " filetype plugin on
