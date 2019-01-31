@@ -266,7 +266,7 @@ let NERDSpaceDelims = 1
 
 " Open NerdTree on start if nothing open
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | else | :e | endif
 
 " Moving between windows
 " noremap <C-h> <C-w>h
