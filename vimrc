@@ -47,8 +47,19 @@ let g:airline_theme = 'lucius'
 highlight LineNr ctermbg = Black
 
 " GitGutter Options
-highlight SignColumn ctermbg = Black
-let g:gitgutter_sign_column_always = 1
+set signcolumn=yes
+let g:gitgutter_override_sign_column_highlight = 0
+highlight SignColumn ctermbg=Black
+highlight GitGutterAdd ctermfg=Green
+highlight GitGutterAdd ctermbg=Black
+highlight GitGutterChange ctermfg=Yellow
+highlight GitGutterChange ctermbg=Black
+highlight GitGutterDelete ctermfg=Red
+highlight GitGutterDelete ctermbg=Black
+highlight GitGutterChangeDelete ctermfg=Red
+highlight GitGutterChangeDelete ctermbg=Black
+
+
 
 " Undo Options
 set undodir=~/.vim/undodir
