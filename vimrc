@@ -59,8 +59,6 @@ highlight GitGutterDelete ctermbg=Black
 highlight GitGutterChangeDelete ctermfg=Red
 highlight GitGutterChangeDelete ctermbg=Black
 
-
-
 " Undo Options
 set undodir=~/.vim/undodir
 set undolevels=1000 undoreload=10000
@@ -254,10 +252,10 @@ let g:ale_set_quickfix = 1
 " let g:ale_open_list = 1
 " let g:ale_keep_list_window_open = 0
 let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'python': ['flake8'],
-\}
-let g:ale_python_flake8_args="--ignore=E501,E265,E131"
+  \   'javascript': ['eslint'],
+  \   'python': ['flake8'],
+  \}
+let g:ale_python_flake8_options = '--ignore E501,E265,E131'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
