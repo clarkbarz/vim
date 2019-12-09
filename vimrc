@@ -27,6 +27,7 @@ Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-lexical'
 Plug 'reedes/vim-litecorrect'
 Plug 'hashivim/vim-terraform'
+Plug 'rbong/vim-flog'
 
 call plug#end()
 
