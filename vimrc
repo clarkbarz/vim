@@ -6,9 +6,6 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
@@ -26,7 +23,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-lexical'
 Plug 'reedes/vim-litecorrect'
-Plug 'hashivim/vim-terraform'
 Plug 'rbong/vim-flog'
 Plug 'vim-python/python-syntax'
 
@@ -106,11 +102,6 @@ au BufNewFile,BufRead *.ssi set filetype=html
 " Enable deocomplete on vim startup, remaps tab and space
 set pyxversion=3
 set completeopt-=preview
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-      \ 'smart_case': v:true,
-      \ 'max_list': 20,
-      \ })
 " Remap tab and shift-tab to move through deocomplete options
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
