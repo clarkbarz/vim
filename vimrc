@@ -28,6 +28,7 @@ Plug 'reedes/vim-lexical'
 Plug 'reedes/vim-litecorrect'
 Plug 'hashivim/vim-terraform'
 Plug 'rbong/vim-flog'
+Plug 'vim-python/python-syntax'
 
 call plug#end()
 
@@ -91,7 +92,7 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 " Strip trailing whitespace from these filetypes upon write
-autocmd FileType c,cpp,java,javascript,javascript.jsx,php,ruby,python,htmldjango,html,scss,css,markdown,rst,sql,terraform autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,javascript,javascriptreact,php,ruby,python,htmldjango,html,scss,css,markdown,rst,sql,terraform autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " Open Python/Javascript files with a 100 character line marker
 au BufNewFile,BufRead *.js,*.jsx,*.py set colorcolumn=101
@@ -260,6 +261,9 @@ let g:ale_python_flake8_options = '--ignore E501,E265,E131'
 let g:ale_javascript_eslint_executable = 'eslint_d --cache'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" Python syntax
+let g:python_highlight_all = 1
 
 " NerdCommenter
 let NERDSpaceDelims = 1
