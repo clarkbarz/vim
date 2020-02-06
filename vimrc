@@ -23,7 +23,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-lexical'
 Plug 'reedes/vim-litecorrect'
-Plug 'rbong/vim-flog'
 Plug 'vim-python/python-syntax'
 
 call plug#end()
@@ -306,42 +305,16 @@ nnoremap <space> za
 set foldmethod=indent   " fold based on indent level
 set foldopen-=block     " make {} movement skip folds
 
-" Goyo
-" function! s:auto_goyo()
-    " if &ft == 'markdown' && winnr('$') == 1
-        " Goyo 80
-        " SoftPencil
-        " setlocal spell
-    " elseif exists('#goyo')
-        " Goyo!
-    " endif
-" endfunction
-" function! s:goyo_enter()
-  " set wrap
-  " set linebreak
-" endfunction
-" function! s:goyo_leave()
-    " if winnr('$') < 2
-        " silent! :q
-    " endif
-" endfunction
-" augroup goyo_markdown
-    " autocmd!
-    " autocmd BufNewFile,BufRead * call s:auto_goyo()
-    " autocmd! User GoyoLeave nested call s:goyo_leave()
-" augroup END
-
 " Writing mode
-let g:pencil#wrapModeDefault = 'hard'
-let g:pencil#textwidth = 80
+let g:pencil#wrapModeDefault = 'soft'
+let g:pencil#autoformat = 1
+let g:pencil#textwidth = 100
 let g:airline_section_x = 'Pencil: %{PencilMode()}'
 
 function! Prose()
   call pencil#init()
   call lexical#init()
   call litecorrect#init()
-  " call textobj#quote#init()
-  " call textobj#sentence#init()
 endfunction
 
 " Enable Prose mode for markdown file types
