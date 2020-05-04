@@ -24,6 +24,8 @@ Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-lexical'
 Plug 'reedes/vim-litecorrect'
 Plug 'vim-python/python-syntax'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'vim-scripts/bash-support.vim'
 
 call plug#end()
 
@@ -39,6 +41,9 @@ set background=dark
 " Add vim-airline-powerline fonts
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'lucius'
+
+" YouCompleteMe code completion
+" let g:ycm_open_loclist_on_ycm_diags = 0
 
 " Other Color Options
 highlight LineNr ctermbg = Black
@@ -87,7 +92,8 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 " Strip trailing whitespace from these filetypes upon write
-autocmd FileType c,cpp,java,javascript,javascriptreact,php,ruby,python,htmldjango,html,scss,css,markdown,rst,sql,terraform autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+" autocmd FileType c,cpp,java,javascript,javascriptreact,php,ruby,python,htmldjango,html,scss,css,markdown,rst,sql,terraform,yml,yaml,sh,bash autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd BufWritePre * %s/\s\+$//e
 
 " Open Python/Javascript files with a 100 character line marker
 au BufNewFile,BufRead *.js,*.jsx,*.py set colorcolumn=101
@@ -247,7 +253,7 @@ let g:ale_linters = {
   \   'javascript': ['eslint'],
   \   'python': ['flake8'],
   \}
-let g:ale_python_flake8_options = '--ignore E501,E265,E131'
+" let g:ale_python_flake8_options = '--ignore E501,E265,E131'
 let g:ale_javascript_eslint_executable = 'eslint_d --cache'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -309,6 +315,7 @@ set foldopen-=block     " make {} movement skip folds
 let g:pencil#wrapModeDefault = 'soft'
 let g:pencil#autoformat = 1
 let g:pencil#textwidth = 100
+let g:pencil#mode_indicators = {'hard': 'H', 'auto': 'A', 'soft': 'S', 'off': '',}
 let g:airline_section_x = 'Pencil: %{PencilMode()}'
 
 function! Prose()
@@ -324,6 +331,26 @@ augroup END
 
 " Invoke manually by command for other file types
 command! -nargs=0 Prose call Prose()
+
+" set header title for journal & enter writing mode
+function! JournalMode()
+    execute 'normal gg'
+    let filename = '#' . ' ' . expand('%:r')
+    call setline(1, filename)
+    execute 'normal o'
+    call Prose()
+    " execute 'Goyo'
+endfunction
+
+augroup journal
+  autocmd!
+  " populate journal template
+  " autocmd VimEnter */Journal/**   0r ~/.config/nvim/templates/journal.skeleton
+  " set header for the particular journal
+  autocmd VimEnter */Journal/**   :call JournalMode()
+  " https://stackoverflow.com/questions/12094708/include-a-directory-recursively-for-vim-autocompletion
+  autocmd VimEnter */Journal/**   set complete=k/Users/scott/.Journal/**/*
+augroup END
 
 " Add commands to shift position of current tab left and right
 nnoremap <Leader>= :execute "tabmove" tabpagenr() + 1 <CR>
