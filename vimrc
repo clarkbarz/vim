@@ -26,6 +26,7 @@ Plug 'reedes/vim-litecorrect'
 Plug 'vim-python/python-syntax'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'vim-scripts/bash-support.vim'
+Plug 'jwalton512/vim-blade'
 
 call plug#end()
 
@@ -100,6 +101,7 @@ au BufNewFile,BufRead *.js,*.jsx,*.py set colorcolumn=101
 
 " Open HTML files as HTML Django filetypes
 au BufNewFile,BufRead *.html set filetype=htmldjango
+let g:mustache_abbreviations = 1
 
 " Open SSI files as HTML
 au BufNewFile,BufRead *.ssi set filetype=html
@@ -229,6 +231,8 @@ set softtabstop=2
 set expandtab
 set smarttab
 set shiftround
+
+au Filetype php setl et ts=4 sw=4
 
 "------------------------------------------------------------
 " Mappings {{{1
