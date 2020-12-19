@@ -2,14 +2,33 @@
 " have made, as well as sanely reset options when re-sourcing .vimrc
 set nocompatible
 
-" Attempt to determine the type of a file based on its name and possibly its
-" contents. Use this to allow intelligent auto-indenting for each filetype,
-" and for plugins that are filetype specific.
-filetype indent plugin on
+" vim-plug
+call plug#begin('~/.vim/plugged')
 
-" Pathogen for plugins
-execute pathogen#infect()
-syntax on
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'tpope/vim-markdown'
+Plug 'Raimondi/delimitMate'
+Plug 'mhinz/vim-startify'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-fugitive'
+Plug 'w0rp/ale'
+Plug 'leafgarland/typescript-vim'
+Plug 'reedes/vim-pencil'
+Plug 'reedes/vim-lexical'
+Plug 'reedes/vim-litecorrect'
+Plug 'vim-python/python-syntax'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'vim-scripts/bash-support.vim'
+Plug 'jwalton512/vim-blade'
+
+call plug#end()
 
 " Lucius theme options
 colorscheme lucius
@@ -19,12 +38,29 @@ let g:lucius_contrast_bg = 'high'
 let &t_Co=256
 set background=dark
 
+" vim-airline options
+" Add vim-airline-powerline fonts
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'lucius'
+
+" YouCompleteMe code completion
+" let g:ycm_open_loclist_on_ycm_diags = 0
+
 " Other Color Options
 highlight LineNr ctermbg = Black
 
 " GitGutter Options
-highlight SignColumn ctermbg = Black
-let g:gitgutter_sign_column_always = 1
+set signcolumn=yes
+let g:gitgutter_override_sign_column_highlight = 0
+highlight SignColumn ctermbg=Black
+highlight GitGutterAdd ctermfg=Green
+highlight GitGutterAdd ctermbg=Black
+highlight GitGutterChange ctermfg=Yellow
+highlight GitGutterChange ctermbg=Black
+highlight GitGutterDelete ctermfg=Red
+highlight GitGutterDelete ctermbg=Black
+highlight GitGutterChangeDelete ctermfg=Red
+highlight GitGutterChangeDelete ctermbg=Black
 
 " Undo Options
 set undodir=~/.vim/undodir
@@ -32,45 +68,54 @@ set undolevels=1000 undoreload=10000
 set undofile
 
 " CtrlP Options
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_map = '<leader>t'
+let g:ctrlp_match_window = 'max:20'
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_prompt_mappings = {
+  \ 'AcceptSelection("e")': ['<c-t>'],
+  \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
+  \}
+
+set wildignore+=*/tmp/*,*/node_modules/*,*.so,*.swp,*.zip,*.pyc,*/.git/*
 
 " <Ctrl-l> redraws the screen and removes any search highlighting.
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 
+" Leader remapped to ;
+let mapleader = ";"
+
 " Function to save cursor position when removing trailing whitespace
 fun! <SID>StripTrailingWhitespaces()
-    let l = line(".") 
+    let l = line(".")
     let c = col(".")
     %s/\s\+$//e
     call cursor(l, c)
 endfun
 
 " Strip trailing whitespace from these filetypes upon write
-autocmd FileType c,cpp,java,javascript,javascript.jsx,php,ruby,python,htmldjango,html,scss,css,markdown,rst autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+" autocmd FileType c,cpp,java,javascript,javascriptreact,php,ruby,python,htmldjango,html,scss,css,markdown,rst,sql,terraform,yml,yaml,sh,bash autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd BufWritePre * %s/\s\+$//e
+
+" Open Python/Javascript files with a 100 character line marker
+au BufNewFile,BufRead *.js,*.jsx,*.py set colorcolumn=101
 
 " Open HTML files as HTML Django filetypes
 au BufNewFile,BufRead *.html set filetype=htmldjango
+let g:mustache_abbreviations = 1
 
 " Open SSI files as HTML
 au BufNewFile,BufRead *.ssi set filetype=html
 
-" Call Flake8 on python save
-"autocmd BufWritePost *.py call Flake8()
-
-" Flake8 Options
-"let g:flake8_ignore = "E501,W293,E265"
-
-" Enable neocomplete on vim startup, remaps tab and space
+" Enable deocomplete on vim startup, remaps tab and space
+set pyxversion=3
 set completeopt-=preview
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#min_syntax_length = 4
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-    return neocomplete#smart_close_popup() . "\<CR>"
-endfunction
+" Remap tab and shift-tab to move through deocomplete options
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Native autocomplete?
+" filetype plugin on
+" set omnifunc=syntaxcomplete#Complete
 
 " Use system clipboard
 set clipboard=unnamed
@@ -105,6 +150,7 @@ set showcmd
 
 " Highlight searches (use <C-L> to temporarily turn off highlighting; see the
 " mapping of <C-L> below)
+set incsearch
 set hlsearch
 
 " Modelines have historically been a source of security vulnerabilities. As
@@ -159,11 +205,12 @@ set t_vb=
 set mouse=a
 
 " Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
+" press <Enter> to continue"
 set cmdheight=2
 
 " Display line numbers on the left
 set number
+set relativenumber
 
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
@@ -185,6 +232,8 @@ set expandtab
 set smarttab
 set shiftround
 
+au Filetype php setl et ts=4 sw=4
+
 "------------------------------------------------------------
 " Mappings {{{1
 "
@@ -198,30 +247,36 @@ map Y y$
 " next search
 nnoremap <C-L> :nohl<CR><C-L>
 
-" Syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" Asynchronous Lint Engine settings
+let g:airline#extensions#ale#enabled = 1
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+" let g:ale_open_list = 1
+" let g:ale_keep_list_window_open = 0
+let g:ale_linters = {
+  \   'javascript': ['eslint'],
+  \   'python': ['flake8'],
+  \}
+" let g:ale_python_flake8_options = '--ignore E501,E265,E131'
+let g:ale_javascript_eslint_executable = 'eslint_d --cache'
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['scss'] }
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-
-" Let javascript files be linted with eslint
-let g:syntastic_javascript_checkers = ['eslint']
-
-" Syntastic python settings
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--ignore=E501,E265,E131'
-let g:syntastic_python_python_exec = '/usr/local/bin/python3'
+" Python syntax
+let g:python_highlight_all = 1
 
 " NerdCommenter
 let NERDSpaceDelims = 1
 
-" Command-T Ignore all node_modules directories
-set wildignore+=**/node_modules/*
+" Open NerdTree on start if nothing open
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | else | :e | endif
+
+" Moving between windows
+" noremap <C-h> <C-w>h
+" noremap <C-j> <C-w>j
+" noremap <C-k> <C-w>k
+" noremap <C-l> <C-w>l
 
 " Turn vim into word processing mode
 " func! WordProcessorMode()
@@ -241,10 +296,66 @@ set wildignore+=**/node_modules/*
 function! NumberToggle()
   if(&relativenumber == 1)
     set number
+    set relativenumber!
   else
+    set number!
     set relativenumber
   endif
 endfunc
 
 " Map Ctrl-n to toggling relative line numbers
 nnoremap <C-n> :call NumberToggle()<cr>
+
+" Folds
+set foldenable          " enable folding
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+" space open/closes folds
+nnoremap <space> za
+set foldmethod=indent   " fold based on indent level
+set foldopen-=block     " make {} movement skip folds
+
+" Writing mode
+let g:pencil#wrapModeDefault = 'soft'
+let g:pencil#autoformat = 1
+let g:pencil#textwidth = 100
+let g:pencil#mode_indicators = {'hard': 'H', 'auto': 'A', 'soft': 'S', 'off': '',}
+let g:airline_section_x = 'Pencil: %{PencilMode()}'
+
+function! Prose()
+  call pencil#init()
+  call lexical#init()
+  call litecorrect#init()
+endfunction
+
+" Enable Prose mode for markdown file types
+augroup prose
+  autocmd FileType markdown,mkd call Prose()
+augroup END
+
+" Invoke manually by command for other file types
+command! -nargs=0 Prose call Prose()
+
+" set header title for journal & enter writing mode
+function! JournalMode()
+    execute 'normal gg'
+    let filename = '#' . ' ' . expand('%:r')
+    call setline(1, filename)
+    execute 'normal o'
+    call Prose()
+    " execute 'Goyo'
+endfunction
+
+augroup journal
+  autocmd!
+  " populate journal template
+  " autocmd VimEnter */Journal/**   0r ~/.config/nvim/templates/journal.skeleton
+  " set header for the particular journal
+  autocmd VimEnter */Journal/**   :call JournalMode()
+  " https://stackoverflow.com/questions/12094708/include-a-directory-recursively-for-vim-autocompletion
+  autocmd VimEnter */Journal/**   set complete=k/Users/scott/.Journal/**/*
+augroup END
+
+" Add commands to shift position of current tab left and right
+nnoremap <Leader>= :execute "tabmove" tabpagenr() + 1 <CR>
+nnoremap <Leader>- :execute "tabmove" tabpagenr() - 2 <CR>
